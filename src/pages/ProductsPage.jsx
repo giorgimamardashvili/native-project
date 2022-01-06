@@ -32,7 +32,7 @@ export default function ProductsPage() {
   return (
     <FlatList
       data={products}
-      renderItem={Product}
+      renderItem={({ item }) => <Product item={item} />}
       keyExtractor={(item) => item.id}
       style={styles.container}
       ListFooterComponent={renderLoader}

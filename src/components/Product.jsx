@@ -1,9 +1,17 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useSelector, useDispatch } from "react-redux";
+import { addItem, removeItem } from "../redux/reducers/cartItems";
 
 export default function Product({ item }) {
-  console.log(item);
+  const { cartItems } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const addProductHandler = (data) => {
+    dispatch(addItem(data));
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -23,9 +31,12 @@ export default function Product({ item }) {
           <Text style={styles.textPrice}>₾</Text>
         </Text>
       </View>
-      <View style={styles.cart}>
+      <TouchableOpacity
+        style={styles.cart}
+        onPress={() => addProductHandler(item)}
+      >
         <Ionicons name={"cart"} size={16} color={"grey"} />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
