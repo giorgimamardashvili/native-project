@@ -3,7 +3,8 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector, useDispatch } from "react-redux";
-import { addItem, removeItem } from "../redux/reducers/cartItems";
+import { addItem, getTotals, removeItem } from "../redux/reducers/cartItems";
+import styled from "styled-components/native";
 
 export default function Product({ item }) {
   const { cartItems } = useSelector((state) => state.cart);
@@ -11,77 +12,72 @@ export default function Product({ item }) {
 
   const addProductHandler = (data) => {
     dispatch(addItem(data));
+    dispatch(getTotals());
   };
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
+    <Container>
+      <Img
         source={
           item?.thumb_img
             ? item.thumb_img.files.file
             : require("../../assets/images/notfound.jpg")
         }
       />
-      <View style={styles.textContainer}>
-        <Text style={styles.textTitle} numberOfLines={2} ellipsizeMode="tail">
+      <TextContainer>
+        <TextTitle numberOfLines={2} ellipsizeMode="tail">
           {item.name}
-        </Text>
-        <Text style={styles.textPrice}>
+        </TextTitle>
+        <TextPrice>
           {item.original_price}
-          <Text style={styles.textPrice}>₾</Text>
-        </Text>
-      </View>
-      <TouchableOpacity
-        style={styles.cart}
-        onPress={() => addProductHandler(item)}
-      >
+          <TextPrice>₾</TextPrice>
+        </TextPrice>
+      </TextContainer>
+      <Cart onPress={() => addProductHandler(item)}>
         <Ionicons name={"cart"} size={16} color={"grey"} />
-      </TouchableOpacity>
-    </View>
+      </Cart>
+    </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    borderBottomWidth: "1px",
-    borderBottomColor: "#d5d5d5",
-    color: "#092b43",
-    position: "relative",
-    margin: "15px",
-    flexDirection: "row",
-    backgroundColor: "white",
-    overflow: "hidden",
-  },
-  image: {
-    width: "30%",
-    aspectRatio: "1 / 1",
-    objectFit: "contain",
-  },
-  cart: {
-    width: "40px",
-    height: "40px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-    backgroundColor: "white",
-    border: "1px solid #dcdfe6",
-    position: "absolute",
-    right: "15px",
-    bottom: "15px",
-  },
-  textContainer: {
-    display: "flex",
-    flexDirection: "column",
-    padding: "10px",
-    width: "70%",
-  },
-  textTitle: {
-    fontSize: "12px",
-  },
-  textPrice: {
-    fontSize: "16px",
-    fontWeight: "bold",
-  },
-});
+const Container = styled.View`
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-color: #d5d5d5;
+  color: #092b43;
+  position: relative;
+  flex-direction: row;
+  background-color: white;
+  overflow: hidden;
+  padding: 15px;
+`;
+const Img = styled.Image`
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+`;
+const TextContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 70%;
+`;
+const TextTitle = styled.Text`
+  font-size: 12px;
+`;
+const TextPrice = styled.Text`
+  font-size: 12px;
+  font-weight: bold;
+`;
+const Cart = styled.TouchableOpacity`
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid #dcdfe6;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+`;

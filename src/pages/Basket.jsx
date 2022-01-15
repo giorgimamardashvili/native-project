@@ -7,27 +7,30 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getTotals } from "../redux/reducers/cartItems";
 import CartProduct from "../components/CartProduct";
 
 export default function Basket() {
-  const { cartItems, cartTotalAmount, cartTotalQty } = useSelector(
-    (state) => state.cart
-  );
-  console.log(cartItems);
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getTotals);
+  }, []);
+  console.log(cart.cartItems, cart.cartTotalAmount, cart.cartTotalQty);
 
   return (
     <ScrollView style={styles.main}>
       <FlatList
-        data={cartItems}
+        data={cart.cartItems}
         renderItem={({ item }) => <CartProduct item={item} />}
         keyExtractor={(item) => item.id}
         style={styles.container}
       />
       <View style={styles.cartInfo}>
         <View>
-          <Text style={styles.price}>{cartTotalAmount}₾</Text>
-          <Text style={styles.qty}> {cartTotalQty} პროდუქტი</Text>
+          <Text style={styles.price}>{cart.cartTotalAmount}₾</Text>
+          <Text style={styles.qty}> {cart.cartTotalQty} პროდუქტი</Text>
         </View>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>ყიდვა</Text>
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "white",
     maxHeight: "calc(100vh - 80px - 124px)",
-    overflow: "auto",
+    overflow: "scroll",
   },
   cartInfo: {
     position: "fixed",

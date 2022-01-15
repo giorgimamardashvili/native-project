@@ -16,14 +16,13 @@ const basketName = "კალათა";
 const authName = "პროფილი";
 
 const Tab = createBottomTabNavigator();
-
 export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName={homeName}
+            initialRouteName={authName}
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
@@ -37,7 +36,6 @@ export default function App() {
                   iconName = focused ? "cart" : "cart-outline";
                 }
 
-                // You can return any component that you like here!
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
               tabBarActiveTintColor: "#211844",

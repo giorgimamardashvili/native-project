@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import axios from "axios";
 import Product from "../components/Product";
+import styled from "styled-components/native";
 
 export default function ProductsPage() {
   const [products, setProducts] = React.useState([]);
@@ -18,9 +19,9 @@ export default function ProductsPage() {
   }
   const renderLoader = () => {
     return isLoading ? (
-      <View style={styles.loaderStyle}>
+      <LoaderStyle>
         <ActivityIndicator size="large" color="#aaa" />
-      </View>
+      </LoaderStyle>
     ) : null;
   };
   const loadMoreItem = () => {
@@ -30,11 +31,10 @@ export default function ProductsPage() {
     getProducts();
   }, [currentPage]);
   return (
-    <FlatList
+    <Container
       data={products}
       renderItem={({ item }) => <Product item={item} />}
       keyExtractor={(item) => item.id}
-      style={styles.container}
       ListFooterComponent={renderLoader}
       onEndReached={loadMoreItem}
       onEndReachedThreshold={0}
@@ -42,14 +42,12 @@ export default function ProductsPage() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "white",
-  },
-  loaderStyle: {
-    marginVertical: 16,
-    alignItems: "center",
-  },
-});
+const Container = styled.FlatList`
+display: flex;
+flex-direction: "column;
+background-color: white;
+`;
+const LoaderStyle = styled.View`
+  margin: 16px 0;
+  align-items: center;
+`;
