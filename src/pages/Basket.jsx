@@ -1,15 +1,18 @@
 import React from "react";
 import {
   FlatList,
-  StyleSheet,
   View,
   TouchableOpacity,
   Text,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getTotals } from "../redux/reducers/cartItems";
 import CartProduct from "../components/CartProduct";
+import styled from "styled-components/native";
+
+const screenHeight = Dimensions.get("window").height;
 
 export default function Basket() {
   const cart = useSelector((state) => state.cart);
@@ -20,69 +23,65 @@ export default function Basket() {
   console.log(cart.cartItems, cart.cartTotalAmount, cart.cartTotalQty);
 
   return (
-    <ScrollView style={styles.main}>
-      <FlatList
+    <Main>
+      <Container
         data={cart.cartItems}
         renderItem={({ item }) => <CartProduct item={item} />}
         keyExtractor={(item) => item.id}
-        style={styles.container}
       />
-      <View style={styles.cartInfo}>
+      <CartInfo>
         <View>
-          <Text style={styles.price}>{cart.cartTotalAmount}₾</Text>
-          <Text style={styles.qty}> {cart.cartTotalQty} პროდუქტი</Text>
+          <Price>{cart.cartTotalAmount}₾</Price>
+          <Qty>{cart.cartTotalQty} პროდუქტი</Qty>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>ყიდვა</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        <Button>
+          <ButtonText>ყიდვა</ButtonText>
+        </Button>
+      </CartInfo>
+    </Main>
   );
 }
 
-const styles = StyleSheet.create({
-  main: {
-    position: "relative",
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "white",
-    maxHeight: "calc(100vh - 80px - 124px)",
-    overflow: "scroll",
-  },
-  cartInfo: {
-    position: "fixed",
-    bottom: "0",
-    right: "0",
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "15px",
-    backgroundColor: "white",
-    height: "85px",
-    borderTopWidth: "1px",
-    borderTopColor: "#d5d5d5",
-  },
-  button: {
-    height: "40px",
-    width: "195px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#7ca039",
-    borderRadius: "8px",
-  },
-  buttonText: {
-    color: "white",
-  },
-  price: {
-    fontSize: "20px",
-    fontWeight: "bold",
-  },
-  qty: {
-    fontSize: "16px",
-  },
-});
+const Main = styled.View`
+  position: relative;
+`;
+const Container = styled.FlatList`
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  overflow: scroll;
+  max-height: ${screenHeight - 204}px;
+`;
+
+const CartInfo = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: white;
+  height: 85px;
+  border-top-width: 1px;
+  border-top-color: #d5d5d5;
+`;
+
+const Button = styled.TouchableOpacity`
+  height: 40px;
+  width: 195px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #7ca039;
+  border-radius: 8px;
+`;
+const ButtonText = styled.Text`
+  color: white;
+`;
+const Price = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+`;
+const Qty = styled.Text`
+  font-size: 20px;
+`;

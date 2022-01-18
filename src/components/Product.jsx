@@ -1,6 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector, useDispatch } from "react-redux";
 import { addItem, getTotals, removeItem } from "../redux/reducers/cartItems";
@@ -17,9 +16,10 @@ export default function Product({ item }) {
   return (
     <Container>
       <Img
+        style={{ resizeMode: "contain" }}
         source={
           item?.thumb_img
-            ? item.thumb_img.files.file
+            ? { uri: `${item.thumb_img.files.file}` }
             : require("../../assets/images/notfound.jpg")
         }
       />
@@ -51,9 +51,8 @@ const Container = styled.View`
   padding: 15px;
 `;
 const Img = styled.Image`
-  width: 30%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
+  width: 100px;
+  height: 100px;
 `;
 const TextContainer = styled.View`
   display: flex;
@@ -74,7 +73,7 @@ const Cart = styled.TouchableOpacity`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  border-radius: 20px;
   background-color: white;
   border: 1px solid #dcdfe6;
   position: absolute;

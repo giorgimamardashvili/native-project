@@ -30,9 +30,10 @@ export default function CartProduct({ item }) {
     <Container>
       <ItemTop>
         <Img
+          style={{ resizeMode: "contain" }}
           source={
             item?.thumb_img
-              ? item.thumb_img.files.file
+              ? { uri: `${item.thumb_img.files.file}` }
               : require("../../assets/images/notfound.jpg")
           }
         />
@@ -52,7 +53,7 @@ export default function CartProduct({ item }) {
           <Plus onPress={() => decreaseItemHandler(item)}>
             <Ionicons name={"remove"} size={16} color={"#122545"} />
           </Plus>
-          <TxtInput keyboardType="numeric" value={item.cartQty} />
+          <TxtInput keyboardType={"numeric"} value={String(item.cartQty)} />
           <Plus onPress={() => increaseItemHandler(item)}>
             <Ionicons name={"add"} size={16} color={"#122545"} />
           </Plus>
@@ -87,9 +88,8 @@ const ItemBottom = styled.View`
   margin-top: 15px;
 `;
 const Img = styled.Image`
-  width: 30%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
+  width: 100px;
+  height: 100px;
 `;
 const Remove = styled.TouchableOpacity`
   height: 40px;
@@ -116,7 +116,7 @@ const TextPrice = styled.Text`
 `;
 const QtyChange = styled.View`
   display: flex;
-  alignitems: center;
+  align-items: center;
   flex-direction: row;
   border-width: 1px;
   border-color: grey;

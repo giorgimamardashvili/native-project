@@ -13,7 +13,6 @@ export default function ProductsPage() {
     const response = await axios.get(
       `https://cms.vendoo.ge/api/beta/catalog?url=technics&page=${currentPage}`
     );
-    console.log(response.data);
     setProducts((prev) => [...prev, ...response.data.products]);
     setIsLoading(false);
   }
@@ -43,9 +42,9 @@ export default function ProductsPage() {
 }
 
 const Container = styled.FlatList`
-display: flex;
-flex-direction: "column;
-background-color: white;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
 `;
 const LoaderStyle = styled.View`
   margin: 16px 0;

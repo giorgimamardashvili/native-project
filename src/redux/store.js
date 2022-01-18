@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   persistStore,
   persistReducer,
@@ -9,19 +10,20 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import cartSlice from "./reducers/cartItems";
+import authSlice from "./reducers/auth";
 
 const persistConfig = {
   key: "root",
   version: 1,
-  storage,
+  storage: AsyncStorage,
 };
 
 const persistedReducer = persistReducer(persistConfig, cartSlice);
+const persistedReducerAuth = persistReducer(persistConfig, authSlice);
 
 export const store = configureStore({
-  reducer: { cart: persistedReducer },
+  reducer: { cart: persistedReducer, auth: persistedReducerAuth },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
